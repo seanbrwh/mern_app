@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/server/**/*"],
+  "exclude": ["src/client/**/*"],
+  "compileOnSave": false,
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "target": "ES5",
+    "jsx": "react",
+    "lib": ["DOM", "ES6"],
+    "outDir": "dist"
+  }
+}
