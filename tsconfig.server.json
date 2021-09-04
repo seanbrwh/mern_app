@@ -1,16 +1,15 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/server/**/*"],
-  "exclude": ["src/client/**/*"],
+  "include": ["./src/server/**/*"],
+  "exclude": ["./src/client/**/*", "./node_modules"],
   "compileOnSave": false,
   "compilerOptions": {
+    "outDir": "./dist/server",
+    "noEmit": false,
     "module": "commonjs",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "target": "ES5",
-    "jsx": "react",
-    "lib": ["DOM", "ES6"],
-    "outDir": "dist"
+    "target": "ES6",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   }
 }

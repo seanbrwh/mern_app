@@ -7,8 +7,8 @@ const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 module.exports = (env) => ({
   entry: { mern_app: "./src/client/index.tsx" },
   output: {
-    path: __dirname + "/dist/static/",
-    filename: env.LOCAL ? "[name].js" : "[name][contenthash].js",
+    path: __dirname + "/dist/static",
+    filename: env.LOCAL ? "[name].js" : "[name].[hash].js",
     publicPath: env.PUBLIC_PATH || "/dist/static/",
   },
   module: {
@@ -28,9 +28,14 @@ module.exports = (env) => ({
       },
     ],
   },
+  devtool: "source-map",
   devServer: {
     historyApiFallback: true,
     port: 3015,
+    host: "0.0.0.0",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
@@ -38,7 +43,7 @@ module.exports = (env) => ({
   plugins: [
     new CleanWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
-      typescript: { configFile: "./tsconfig.client.json" },
+      typescript: { configFile: "./tsconfig.server.json" },
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: env && env.ANALYZE ? "server" : "disabled",
