@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev:gulp": "gulp",
     "dev:server": "cross-env NODE_ENV=development tsc-watch --p \"./tsconfig.server.json\" --onSuccess \"nodemon -r dotenv/config  ./dist/server/index.js\"",
     "dev:client": "webpack-dev-server --mode development --env LOCAL=true --env PUBLIC_PATH=http://localhost:3015",
     "test:build": "webpack -w --mode development --env LOCAL=true"
