@@ -6,10 +6,13 @@ import { applyMiddleware } from "./utils";
 
 import middleware from "./middleware";
 
+import { connectDB } from "./utils/connect";
+
 const { SERVER_PORT } = process.env;
 
 const router = express();
 applyMiddleware(middleware, router);
+connectDB();
 
 const server = http.createServer(router);
 
