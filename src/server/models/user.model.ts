@@ -1,10 +1,11 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, model, ObjectId } from "mongoose";
+import { IRole } from "./role.model";
 
 export interface IUser {
   username: string;
   email: string;
   password: string;
-  roles: Array<{ type: mongoose.Schema.Types.ObjectId; ref: string }>;
+  roles: Array<any>;
 }
 
 const schema = new Schema<IUser>({
@@ -13,8 +14,8 @@ const schema = new Schema<IUser>({
   password: { type: String, required: true, minlength: 8 },
   roles: [
     {
-      _id: Schema.Types.ObjectId,
-      name: String,
+      type: Schema.Types.ObjectId,
+      ref: "Role",
     },
   ],
 });

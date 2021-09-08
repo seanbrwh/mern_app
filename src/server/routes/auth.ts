@@ -1,44 +1,23 @@
+import middleware from "../middleware";
+import { applyMiddleware } from "../utils";
+import { signIn, singup } from "../controllers/auth.controller";
+
+const auth = middleware.auth;
+
 export default [
   {
-    method: "post",
+    method: "POST",
     path: "/api/auth/signup",
     handler: (req, res) => {
-      // Sign up a new account
+      singup;
     },
   },
   {
-    method: "post",
+    method: "POST",
     path: "/api/auth/signin",
     handler: (req, res) => {
-      // Log into an account
-    },
-  },
-  {
-    method: "get",
-    path: "/api/test/all",
-    handler: (req, res) => {
-      //retrieve public content
-    },
-  },
-  {
-    method: "get",
-    path: "/api/test/user",
-    handler: (req, res) => {
-      //access a users account
-    },
-  },
-  {
-    method: "get",
-    path: "/api/test/mod",
-    handler: (req, res) => {
-      //access a mods account
-    },
-  },
-  {
-    method: "get",
-    path: "/api/test/admin",
-    handler: (req, res) => {
-      //access an admin account
+      signIn;
     },
   },
 ];
+dd;
