@@ -2,17 +2,17 @@
 import express from "express";
 import http from "http";
 
-import { applyMiddleware } from "./utils";
+import { applyMiddleware, applyRoutes, connectDB } from "./utils";
 
 import middleware from "./middleware";
-
-import { connectDB } from "./utils/connect";
+import routes from "./routes";
 
 const { SERVER_PORT } = process.env;
 
 const router = express();
-applyMiddleware(middleware, router);
+applyMiddleware(middleware.common, router);
 connectDB();
+applyRoutes(routes, router);
 
 const server = http.createServer(router);
 

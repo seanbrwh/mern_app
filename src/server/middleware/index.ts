@@ -10,14 +10,26 @@ import {
   setSession,
 } from "./common";
 
-export default [
-  handleCors,
-  handleBodyRequestParsing,
-  handleCompression,
-  handleLogging,
-  setBasePath,
-  setViewEngine,
-  setStaticPath,
-  serveIndex,
-  setSession,
-];
+import { checkRolesExisted, checkDuplicateUsernameOrEmail } from "./auth";
+import { verifyToken, isAdmin, isMod } from "./authjwt";
+
+export default {
+  common: [
+    handleCors,
+    handleBodyRequestParsing,
+    handleCompression,
+    handleLogging,
+    setBasePath,
+    setViewEngine,
+    setStaticPath,
+    serveIndex,
+    setSession,
+  ],
+  auth: {
+    checkRolesExisted,
+    checkDuplicateUsernameOrEmail,
+    verifyToken,
+    isAdmin,
+    isMod,
+  },
+};
