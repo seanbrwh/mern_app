@@ -8,8 +8,8 @@ module.exports = (env) => ({
   entry: { mern_app: "./src/client/index.tsx" },
   output: {
     path: __dirname + "/dist/static",
-    filename: env.LOCAL ? "[name].js" : "[name].[hash].js",
-    publicPath: env.PUBLIC_PATH || "/dist/static/",
+    filename: env.LOCAL === "true" ? "[name].js" : "[name].[hash].js",
+    publicPath: env.LOCAL === "true" ? env.PUBLIC_PATH : "/dist/static/",
   },
   module: {
     rules: [
@@ -22,16 +22,21 @@ module.exports = (env) => ({
         test: /\.(png|jpe?g|gif|svg)$/,
         loader: "file-loader",
         options: {
-          name: env.LOCAL ? "[path][name].[ext]" : "[contenthash].[ext]",
-          publicPath: env.PUBLIC_PATH || "/dist/static/assets/",
+          name:
+            env.LOCAL === "true" ? "[path][name].[ext]" : "[contenthash].[ext]",
+          publicPath:
+            env.LOCACL === "true" ? env.PUBLIC_PATH : "/dist/static/assets/",
         },
       },
     ],
   },
   devtool: "source-map",
+  target: ["web"],
   devServer: {
+    proxy: { "/api": { target: "http://localhost:4000", secure: false } },
     historyApiFallback: true,
     port: 3015,
+    hot: true,
     host: "0.0.0.0",
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -41,12 +46,15 @@ module.exports = (env) => ({
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      verbose: true,
+      cleanOnceBeforeBuildPatterns: ["**/*", "!manifest.json"],
+    }),
     new ForkTsCheckerWebpackPlugin({
       typescript: { configFile: "./tsconfig.server.json" },
     }),
     new BundleAnalyzerPlugin({
-      analyzerMode: env && env.ANALYZE ? "server" : "disabled",
+      analyzerMode: env && env.ANALYZE === true ? "server" : "disabled",
     }),
     new WebpackManifestPlugin(),
   ],

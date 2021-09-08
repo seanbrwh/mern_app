@@ -9,12 +9,14 @@ import session from "express-session";
 const { NODE_ENV } = process.env;
 
 export const handleCors = (router: Router) => {
-  router.use(cors());
+  router.use(
+    cors({ origin: ["http://localhost:3015", "http://localhost:4000"] })
+  );
 };
 export const handleBodyRequestParsing = (router: Router) => {
   router.use(express.urlencoded({ extended: true, limit: "50mb" }));
   router.use(express.json());
-  router.use(express.json({ type: "application/vnd.api+json" }));
+  router.use(express.json({ type: "application/json" }));
 };
 export const handleCompression = (router: Router) => {
   router.use(compress());
@@ -54,8 +56,8 @@ export const serveIndex = (router: Router) => {
       res.render("index", {
         jsMainFile:
           NODE_ENV === "development"
-            ? "http://localhost:3015/mern_app.js"
-            : require("../../dist/static/manifest.json")["freelance-crm.js"],
+            ? `http://localhost:3015/mern_app.js`
+            : require("../../dist/static/manifest.json")["mern_app.js"],
       });
     }
   });
