@@ -1,25 +1,50 @@
-import mongoose, { Schema, model, ObjectId } from "mongoose";
-import { IRole } from "./role.model";
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
-export interface IUser {
-  username: string;
+export interface UserDocument extends mongoose.Document {
   email: string;
+  name: string;
   password: string;
-  roles: Array<any>;
+  createdAt: Date;
+  updatedAt: Date;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-const schema = new Schema<IUser>({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true, minlength: 8 },
-  roles: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Role",
-    },
-  ],
+const UserSchema = new mongoose.Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    password: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+UserSchema.pre("save", async function (next: any) {
+  let user = this as UserDocument;
+
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified("password")) return next();
+
+  // Random additional data
+  const salt = await bcrypt.genSalt(10);
+
+  const hash = await bcrypt.hashSync(user.password, salt);
+
+  // Replace the password with the hash
+  user.password = hash;
+
+  return next();
 });
 
-const UserModel = model<IUser>("User", schema);
+// Used for logging in
+UserSchema.methods.comparePassword = async function (
+  candidatePassword: string
+) {
+  const user = this as UserDocument;
 
-export default UserModel;
+  return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
+};
+
+const User = mongoose.model<UserDocument>("User", UserSchema);
+
+export default User;
