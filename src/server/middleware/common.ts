@@ -13,26 +13,33 @@ export const handleCors = (router: Router) => {
     cors({ origin: ["http://localhost:3015", "http://localhost:4000"] })
   );
 };
+
 export const handleBodyRequestParsing = (router: Router) => {
   router.use(express.urlencoded({ extended: true, limit: "50mb" }));
   router.use(express.json());
   router.use(express.json({ type: "application/json" }));
 };
+
 export const handleCompression = (router: Router) => {
   router.use(compress());
 };
+
 export const handleLogging = (router: Router) => {
   router.use(morgan("tiny"));
 };
+
 export const setBasePath = (router: Application) => {
   router.set("views", path.join(__dirname, "../views"));
 };
+
 export const setViewEngine = (router: Application) => {
   router.set("view engine", "ejs");
 };
+
 export const setStaticPath = (router: Router) => {
   router.use("/dist", express.static(path.join(__dirname, "../../dist")));
 };
+
 export const setSession = (router: Router) => {
   router.use(
     session({
